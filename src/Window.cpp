@@ -11,15 +11,23 @@
 #include <QTimer>
 #include <QDebug>
 #include <QApplication>
+#include <QWidget>
+#include <QHBoxLayout>
+#include <QPushButton>
 #include "Scene.hpp"
 #include "Render.hpp"
 #include "DFSSolver.hpp"
+#include "WidgetCom.hpp"
 
 class WindowPrivate
 {
 public:
     Q_DECLARE_PUBLIC(Window)
     Window *q_ptr;
+    QHBoxLayout *mLayout;
+    QVBoxLayout *mButtonLayout;
+    QPushButton *mDFS;
+    QWidget *mView;
     Scene mScene;
     Render mRender;
     DFSSolver mSolver;
@@ -33,7 +41,16 @@ WindowPrivate::WindowPrivate(Window *p) :
         q_ptr(p),
         mScene(50, 30)
 {
+    Q_Q(Window);
     mRender.setScene(&mScene);
+//    initWidget(mLayout, q);
+//    initWidget(mView, q);
+//    initWidget(mDFS, q);
+//    mButtonLayout = new QVBoxLayout;
+//    mLayout->addLayout(mButtonLayout);
+//    mLayout->addWidget(mView);
+//    mButtonLayout->addWidget(mDFS);
+//    mButtonLayout->addStretch(1);
 }
 
 void WindowPrivate::init()
@@ -45,7 +62,6 @@ void WindowPrivate::init()
     for (int j = 0; j < mScene.size().width(); ++j) {
         mScene.setData(mScene.size().height() - 1, j, BlockType::bt_boundary, 0);
     }
-
     for (int i = 0; i < mScene.size().height(); ++i) {
         mScene.setData(i, 0, BlockType::bt_boundary, 0);
     }

@@ -31,6 +31,7 @@ class Scene;
 class DFSSolver : public AbstractSolver
 {
 public:
+    DFSSolver();
     void setScene(Scene *scene);
     void setStart(int row, int col);
     void setDest(int row, int col);
@@ -48,6 +49,7 @@ private:
     bool mFinish = false;
     Callback mCallback;
     int mDuration = 0;
+    std::vector<std::array<int, 2>> mFuncSortTable;
 };
 
 
