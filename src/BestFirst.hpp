@@ -7,8 +7,8 @@
  * Others:
 *********************************************************************************/
 
-#ifndef PATH_ALGORITHM_DFSSOLVER_HPP
-#define PATH_ALGORITHM_DFSSOLVER_HPP
+#ifndef PATH_ALGORITHM_BESTFIRST_HPP
+#define PATH_ALGORITHM_BESTFIRST_HPP
 
 #include "AbstractSolver.hpp"
 #include <utility>
@@ -28,11 +28,11 @@ enum Direction
 
 class Scene;
 
-class DFSSolver : public AbstractSolver
+class BestFirst : public AbstractSolver
 {
 public:
-    DFSSolver();
-    ~DFSSolver() override = default;
+    BestFirst();
+    ~BestFirst() override = default;
     void setStart(int row, int col) override;
     void setDest(int row, int col) override;
     void reset() override;
@@ -54,4 +54,4 @@ private:
 };
 
 
-#endif //PATH_ALGORITHM_DFSSOLVER_HPP
+#endif //PATH_ALGORITHM_BESTFIRST_HPP

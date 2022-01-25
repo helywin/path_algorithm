@@ -17,7 +17,7 @@
 #include <memory>
 #include "Scene.hpp"
 #include "Render.hpp"
-#include "DFSSolver.hpp"
+#include "BestFirst.hpp"
 #include "WidgetCom.hpp"
 
 class WindowPrivate
@@ -43,7 +43,7 @@ WindowPrivate::WindowPrivate(Window *p) :
         mScene(50, 30)
 {
     Q_Q(Window);
-    mSolver = new DFSSolver();
+    mSolver = new BestFirst();
     mRender.setScene(&mScene);
 //    initWidget(mLayout, q);
 //    initWidget(mView, q);
@@ -103,8 +103,8 @@ Window::Window(QWidget *parent) :
     Q_D(Window);
     d->init();
     resize(d->mScene.size() * d->mRender.blockWidth());
-    QTimer::singleShot(1000, [this] {
-        d_ptr->mSolver->run(10);
+    QTimer::singleShot(4000, [this] {
+        d_ptr->mSolver->run(50);
     });
 }
 

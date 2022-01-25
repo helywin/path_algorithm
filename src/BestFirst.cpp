@@ -7,13 +7,13 @@
  * Others:
 *********************************************************************************/
 
-#include "DFSSolver.hpp"
+#include "BestFirst.hpp"
 #include "Scene.hpp"
 #include <iostream>
 #include <thread>
 #include <chrono>
 
-DFSSolver::DFSSolver()
+BestFirst::BestFirst()
 {
     mFuncSortTable.push_back({1, 0});
     mFuncSortTable.push_back({0, 1});
@@ -36,47 +36,47 @@ int sign(int i)
     }
 }
 
-void DFSSolver::setScene(Scene *scene)
+void BestFirst::setScene(Scene *scene)
 {
     mScene = scene;
 }
 
-void DFSSolver::tick()
+void BestFirst::tick()
 {
     mCallback();
 }
 
-void DFSSolver::run(int interval)
+void BestFirst::run(int interval)
 {
     mDuration = interval;
     dfs(mStartPos.first, mStartPos.second);
 }
 
-void DFSSolver::reset()
+void BestFirst::reset()
 {
     mFinish = true;
 }
 
-void DFSSolver::setStart(int row, int col)
+void BestFirst::setStart(int row, int col)
 {
     mScene->setData(row, col, bt_startPos);
     mStartPos.first = row;
     mStartPos.second = col;
 }
 
-void DFSSolver::setDest(int row, int col)
+void BestFirst::setDest(int row, int col)
 {
     mScene->setData(row, col, bt_destPos);
     mDestPos.first = row;
     mDestPos.second = col;
 }
 
-void DFSSolver::setCallback(Callback callback)
+void BestFirst::setCallback(Callback callback)
 {
     mCallback = callback;
 }
 
-void DFSSolver::dfs(int row, int col)
+void BestFirst::dfs(int row, int col)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(mDuration));
     mCallback();
