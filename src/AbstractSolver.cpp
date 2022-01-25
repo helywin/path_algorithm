@@ -14,7 +14,12 @@ void AbstractSolver::tick()
 
 }
 
-void AbstractSolver::run()
+void AbstractSolver::setCallback(Callback callback)
+{
+
+}
+
+void AbstractSolver::run(int interval)
 {
 
 }

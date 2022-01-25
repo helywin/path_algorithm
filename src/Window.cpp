@@ -8,6 +8,9 @@
 *********************************************************************************/
 
 #include "Window.hpp"
+#include <QTimer>
+#include <QDebug>
+#include <QApplication>
 #include "Scene.hpp"
 #include "Render.hpp"
 #include "DFSSolver.hpp"
@@ -20,12 +23,14 @@ public:
     Scene mScene;
     Render mRender;
     DFSSolver mSolver;
+    QTimer mTimer;
 
     explicit WindowPrivate(Window *p);
     void init();
 };
 
 WindowPrivate::WindowPrivate(Window *p) :
+        q_ptr(p),
         mScene(50, 30)
 {
     mRender.setScene(&mScene);
@@ -64,6 +69,13 @@ void WindowPrivate::init()
     mSolver.setScene(&mScene);
     mSolver.setStart(5, 5);
     mSolver.setDest(24, 44);
+    mSolver.setCallback([this] {
+        q_ptr->update();
+        QApplication::processEvents();
+        qDebug() << "tick";
+    });
+    mTimer.setInterval(1000);
+    mTimer.start();
 }
 
 Window::Window(QWidget *parent) :
@@ -73,6 +85,9 @@ Window::Window(QWidget *parent) :
     Q_D(Window);
     d->init();
     resize(d->mScene.size() * d->mRender.blockWidth());
+    QTimer::singleShot(1000, [this] {
+        d_ptr->mSolver.run(10);
+    });
 }
 
 QSize Window::sizeHint() const

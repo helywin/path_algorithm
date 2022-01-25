@@ -13,6 +13,7 @@
 #include <utility>
 #include <QSize>
 #include <valarray>
+#include <vector>
 #include "Common.hpp"
 
 class Scene
@@ -24,18 +25,22 @@ public:
         barrier,
         obstacle,
     };
-
+    using Path = std::vector<std::pair<int,int>>;
 public:
     Scene(int width, int height);
     void setData(int row, int col, BlockType type, float cost);
+    void setData(int row, int col, BlockType type);
     std::pair<BlockType, float> getData(int row, int col) const;
     QSize size() const;
+    Path &path();
+    bool canPass(int row, int col) const;
 
 protected:
     int mWidth;
     int mHeight;
     std::valarray<BlockType> mData;
     std::valarray<float> mCost;
+    Path mPath;
 };
 
 

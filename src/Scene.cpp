@@ -38,3 +38,27 @@ QSize Scene::size() const
 {
     return {mWidth, mHeight};
 }
+
+Scene::Path &Scene::path()
+{
+    return mPath;
+}
+
+bool Scene::canPass(int row, int col) const
+{
+    if (row < mHeight && row >= 0 &&
+        col < mWidth && col >= 0) {
+        return mData[row * mWidth + col] == bt_empty ||
+               mData[row * mWidth + col] == bt_startPos ||
+               mData[row * mWidth + col] == bt_destPos;
+    } else {
+        return false;
+    }
+}
+
+void Scene::setData(int row, int col, BlockType type)
+{
+    assert(row < mHeight && row >= 0);
+    assert(col < mWidth && col >= 0);
+    mData[row * mWidth + col] = type;
+}

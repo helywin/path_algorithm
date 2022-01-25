@@ -10,12 +10,16 @@
 #ifndef PATH_ALGORITHM_ABSTRACTSOLVER_HPP
 #define PATH_ALGORITHM_ABSTRACTSOLVER_HPP
 
+#include <functional>
+
+using Callback = std::function<void ()>;
 
 class AbstractSolver
 {
 public:
     virtual void tick();
-    virtual void run();
+    virtual void run(int interval);
+    virtual void setCallback(Callback callback);
 };
 
 
