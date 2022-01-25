@@ -47,6 +47,23 @@ void Render::paint(QPaintDevice *device)
             painter.drawRect(r);
         }
     }
+    if (mScene->path().size() < 2) {
+        return;
+    }
+    painter.setPen(QPen(Qt::red, 2));
+    for (int i = 0; i < mScene->path().size() - 1; ++i) {
+        auto &p1 = mScene->path()[i];
+        auto &p2 = mScene->path()[i + 1];
+        QPoint qp1 = {
+                p1.second * blockWidth() + blockWidth() / 2,
+                size.height() * blockWidth() - p1.first * blockWidth() - blockWidth() / 2
+        };
+        QPoint qp2 = {
+                p2.second * blockWidth() + blockWidth() / 2,
+                size.height() * blockWidth() - p2.first * blockWidth() - blockWidth() / 2
+        };
+        painter.drawLine(qp1, qp2);
+    }
 }
 
 int Render::blockWidth() const

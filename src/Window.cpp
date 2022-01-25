@@ -14,6 +14,7 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <memory>
 #include "Scene.hpp"
 #include "Render.hpp"
 #include "DFSSolver.hpp"
@@ -30,7 +31,7 @@ public:
     QWidget *mView;
     Scene mScene;
     Render mRender;
-    DFSSolver mSolver;
+    AbstractSolver *mSolver;
     QTimer mTimer;
 
     explicit WindowPrivate(Window *p);
@@ -42,6 +43,7 @@ WindowPrivate::WindowPrivate(Window *p) :
         mScene(50, 30)
 {
     Q_Q(Window);
+    mSolver = new DFSSolver();
     mRender.setScene(&mScene);
 //    initWidget(mLayout, q);
 //    initWidget(mView, q);
@@ -82,10 +84,10 @@ void WindowPrivate::init()
         mScene.setData(i, 40, BlockType::bt_obstacle, 0);
     }
     // 设置起始终止点
-    mSolver.setScene(&mScene);
-    mSolver.setStart(5, 5);
-    mSolver.setDest(24, 44);
-    mSolver.setCallback([this] {
+    mSolver->setScene(&mScene);
+    mSolver->setStart(5, 5);
+    mSolver->setDest(24, 44);
+    mSolver->setCallback([this] {
         q_ptr->update();
         QApplication::processEvents();
         qDebug() << "tick";
@@ -102,7 +104,7 @@ Window::Window(QWidget *parent) :
     d->init();
     resize(d->mScene.size() * d->mRender.blockWidth());
     QTimer::singleShot(1000, [this] {
-        d_ptr->mSolver.run(10);
+        d_ptr->mSolver->run(10);
     });
 }
 
@@ -114,7 +116,8 @@ QSize Window::sizeHint() const
 
 Window::~Window()
 {
-
+    Q_D(Window);
+    delete d->mSolver;
 }
 
 void Window::paintEvent(QPaintEvent *event)

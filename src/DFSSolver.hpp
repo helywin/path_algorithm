@@ -32,12 +32,13 @@ class DFSSolver : public AbstractSolver
 {
 public:
     DFSSolver();
-    void setScene(Scene *scene);
-    void setStart(int row, int col);
-    void setDest(int row, int col);
-    void reset();
+    ~DFSSolver() override = default;
+    void setStart(int row, int col) override;
+    void setDest(int row, int col) override;
+    void reset() override;
     void tick() override;
     void run(int interval) override;
+    void setScene(Scene *scene) override;
     void setCallback(Callback callback) override;
 protected:
     void dfs(int row, int col);

@@ -8,18 +8,3 @@
 *********************************************************************************/
 
 #include "AbstractSolver.hpp"
-
-void AbstractSolver::tick()
-{
-
-}
-
-void AbstractSolver::setCallback(Callback callback)
-{
-
-}
-
-void AbstractSolver::run(int interval)
-{
-
-}

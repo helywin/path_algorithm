@@ -12,14 +12,20 @@
 
 #include <functional>
 
-using Callback = std::function<void ()>;
+using Callback = std::function<void()>;
+class Scene;
 
 class AbstractSolver
 {
 public:
-    virtual void tick();
-    virtual void run(int interval);
-    virtual void setCallback(Callback callback);
+    virtual ~AbstractSolver() = default;
+    virtual void tick() = 0;
+    virtual void run(int interval) = 0;
+    virtual void setCallback(Callback callback) = 0;
+    virtual void setScene(Scene *scene) = 0;
+    virtual void setStart(int row, int col) = 0;
+    virtual void setDest(int row, int col) = 0;
+    virtual void reset() = 0;
 };
 
 

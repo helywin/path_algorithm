@@ -43,7 +43,6 @@ void DFSSolver::setScene(Scene *scene)
 
 void DFSSolver::tick()
 {
-    AbstractSolver::tick();
     mCallback();
 }
 
@@ -102,6 +101,9 @@ void DFSSolver::dfs(int row, int col)
                          (abs(direction[0] - b[0]) + abs(direction[1] - b[1]));
               });
     for (auto &e: mFuncSortTable) {
+        if (mFinish) {
+            return;
+        }
         if (mScene->canPass(row + e[0], col + e[1])) {
             dfs(row + e[0], col + e[1]);
         }
