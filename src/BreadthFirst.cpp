@@ -8,3 +8,38 @@
 *********************************************************************************/
 
 #include "BreadthFirst.hpp"
+
+void BreadthFirst::tick()
+{
+
+}
+
+void BreadthFirst::run(int interval)
+{
+
+}
+
+void BreadthFirst::setCallback(Callback callback)
+{
+
+}
+
+void BreadthFirst::setScene(Scene *scene)
+{
+
+}
+
+void BreadthFirst::setStart(int row, int col)
+{
+
+}
+
+void BreadthFirst::setDest(int row, int col)
+{
+
+}
+
+void BreadthFirst::reset()
+{
+
+}

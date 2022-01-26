@@ -1,5 +1,5 @@
 /*********************************************************************************
- * FileName: AStarSolver.hpp
+ * FileName: AStar.hpp
  * Author: helywin(jiang770882022@hotmail.com)
  * Version: 0.1
  * Date: 2022/1/25
@@ -7,15 +7,15 @@
  * Others:
 *********************************************************************************/
 
-#ifndef PATH_ALGORITHM_ASTARSOLVER_HPP
-#define PATH_ALGORITHM_ASTARSOLVER_HPP
+#ifndef PATH_ALGORITHM_ASTAR_HPP
+#define PATH_ALGORITHM_ASTAR_HPP
 
 #include "AbstractSolver.hpp"
 
-class AStarSolver : public AbstractSolver
+class AStar : public AbstractSolver
 {
 public:
-    ~AStarSolver() override = default;
+    ~AStar() override = default;
     void tick() override;
     void run(int interval) override;
     void setCallback(Callback callback) override;
@@ -26,4 +26,4 @@ public:
 };
 
 
-#endif //PATH_ALGORITHM_ASTARSOLVER_HPP
+#endif //PATH_ALGORITHM_ASTAR_HPP

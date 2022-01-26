@@ -17,7 +17,7 @@
 #include <memory>
 #include "Scene.hpp"
 #include "Render.hpp"
-#include "BestFirst.hpp"
+#include "GreedyBestFirst.hpp"
 #include "WidgetCom.hpp"
 
 class WindowPrivate
@@ -43,7 +43,7 @@ WindowPrivate::WindowPrivate(Window *p) :
         mScene(50, 30)
 {
     Q_Q(Window);
-    mSolver = new BestFirst();
+    mSolver = new GreedyBestFirst();
     mRender.setScene(&mScene);
 //    initWidget(mLayout, q);
 //    initWidget(mView, q);
@@ -89,7 +89,7 @@ void WindowPrivate::init()
     mSolver->setDest(24, 44);
     mSolver->setCallback([this] {
         q_ptr->update();
-        QApplication::processEvents();
+        QApplication::processEvents(QEventLoop::AllEvents, 100);
         qDebug() << "tick";
     });
     mTimer.setInterval(1000);
@@ -104,7 +104,7 @@ Window::Window(QWidget *parent) :
     d->init();
     resize(d->mScene.size() * d->mRender.blockWidth());
     QTimer::singleShot(4000, [this] {
-        d_ptr->mSolver->run(50);
+        d_ptr->mSolver->run(10);
     });
 }
 

@@ -7,39 +7,39 @@
  * Others:
 *********************************************************************************/
 
-#include "AStarSolver.hpp"
+#include "AStar.hpp"
 
-void AStarSolver::tick()
+void AStar::tick()
 {
 
 }
 
-void AStarSolver::run(int interval)
+void AStar::run(int interval)
 {
 
 }
 
-void AStarSolver::setCallback(Callback callback)
+void AStar::setCallback(Callback callback)
 {
 
 }
 
-void AStarSolver::setScene(Scene *scene)
+void AStar::setScene(Scene *scene)
 {
 
 }
 
-void AStarSolver::setStart(int row, int col)
+void AStar::setStart(int row, int col)
 {
 
 }
 
-void AStarSolver::setDest(int row, int col)
+void AStar::setDest(int row, int col)
 {
 
 }
 
-void AStarSolver::reset()
+void AStar::reset()
 {
 
 }

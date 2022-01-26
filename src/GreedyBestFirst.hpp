@@ -7,8 +7,8 @@
  * Others:
 *********************************************************************************/
 
-#ifndef PATH_ALGORITHM_BESTFIRST_HPP
-#define PATH_ALGORITHM_BESTFIRST_HPP
+#ifndef PATH_ALGORITHM_GREEDYBESTFIRST_HPP
+#define PATH_ALGORITHM_GREEDYBESTFIRST_HPP
 
 #include "AbstractSolver.hpp"
 #include <utility>
@@ -26,13 +26,28 @@ enum Direction
     d_nw,
 };
 
+struct Vertex
+{
+    int row;
+    int col;
+
+    Vertex operator+(const Vertex &v) const
+    {
+        return {row + v.row, col + v.col};
+    }
+
+    bool operator==(const Vertex &v) const {
+        return row == v.row && col == v.col;
+    }
+};
+
 class Scene;
 
-class BestFirst : public AbstractSolver
+class GreedyBestFirst : public AbstractSolver
 {
 public:
-    BestFirst();
-    ~BestFirst() override = default;
+    GreedyBestFirst();
+    ~GreedyBestFirst() override = default;
     void setStart(int row, int col) override;
     void setDest(int row, int col) override;
     void reset() override;
@@ -41,17 +56,17 @@ public:
     void setScene(Scene *scene) override;
     void setCallback(Callback callback) override;
 protected:
-    void dfs(int row, int col);
+    void gbfs();
 private:
     Scene *mScene = nullptr;
-    std::pair<int, int> mStartPos;
-    std::pair<int, int> mDestPos;
+    Vertex mStartPos;
+    Vertex mDestPos;
     std::valarray<float> mCostTable;
     bool mFinish = false;
     Callback mCallback;
     int mDuration = 0;
-    std::vector<std::array<int, 2>> mFuncSortTable;
+    std::vector<Vertex> mDirection;
 };
 
 
-#endif //PATH_ALGORITHM_BESTFIRST_HPP
+#endif //PATH_ALGORITHM_GREEDYBESTFIRST_HPP
