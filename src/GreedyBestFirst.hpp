@@ -50,8 +50,6 @@ public:
     ~GreedyBestFirst() override = default;
     void setStart(int row, int col) override;
     void setDest(int row, int col) override;
-    void reset() override;
-    void tick() override;
     void run(int interval) override;
     void setScene(Scene *scene) override;
     void setCallback(Callback callback) override;

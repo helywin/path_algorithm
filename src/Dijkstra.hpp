@@ -46,13 +46,11 @@ public:
 public:
     Dijkstra();
     ~Dijkstra() override = default;
-    void tick() override;
     void run(int interval) override;
     void setCallback(Callback callback) override;
     void setScene(Scene *scene) override;
     void setStart(int row, int col) override;
     void setDest(int row, int col) override;
-    void reset() override;
 protected:
     void dijkstra();
 private:

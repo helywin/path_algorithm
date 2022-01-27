@@ -28,20 +28,10 @@ void GreedyBestFirst::setScene(Scene *scene)
     mScene = scene;
 }
 
-void GreedyBestFirst::tick()
-{
-    mCallback();
-}
-
 void GreedyBestFirst::run(int interval)
 {
     mDuration = interval;
     gbfs();
-}
-
-void GreedyBestFirst::reset()
-{
-    mFinish = true;
 }
 
 void GreedyBestFirst::setStart(int row, int col)

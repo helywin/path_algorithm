@@ -19,6 +19,7 @@
 #include "Render.hpp"
 #include "GreedyBestFirst.hpp"
 #include "Dijkstra.hpp"
+#include "AStar.hpp"
 #include "WidgetCom.hpp"
 
 class WindowPrivate
@@ -44,7 +45,8 @@ WindowPrivate::WindowPrivate(Window *p) :
         mScene(50, 30)
 {
     Q_Q(Window);
-    mSolver = new Dijkstra();
+    mSolver = new AStar();
+//    mSolver = new Dijkstra();
 //    mSolver = new GreedyBestFirst();
     mRender.setScene(&mScene);
 //    initWidget(mLayout, q);

@@ -19,13 +19,13 @@ class AbstractSolver
 {
 public:
     virtual ~AbstractSolver() = default;
-    virtual void tick() = 0;
+//    virtual void tick() = 0;
     virtual void run(int interval) = 0;
     virtual void setCallback(Callback callback) = 0;
     virtual void setScene(Scene *scene) = 0;
     virtual void setStart(int row, int col) = 0;
     virtual void setDest(int row, int col) = 0;
-    virtual void reset() = 0;
+//    virtual void reset() = 0;
 };
 
 

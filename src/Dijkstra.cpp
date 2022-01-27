@@ -27,20 +27,10 @@ Dijkstra::Dijkstra()
     mDirection.push_back({0, -1, 1});
 }
 
-void Dijkstra::tick()
-{
-
-}
-
 void Dijkstra::run(int interval)
 {
     mDuration = interval;
     dijkstra();
-}
-
-void Dijkstra::reset()
-{
-    mFinish = true;
 }
 
 void Dijkstra::setStart(int row, int col)
