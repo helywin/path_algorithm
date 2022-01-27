@@ -1,5 +1,5 @@
 /*********************************************************************************
- * FileName: DFSSolver.hpp
+ * FileName: BFSSolver.hpp
  * Author: helywin(jiang770882022@hotmail.com)
  * Version: 0.1
  * Date: 2022/1/25
@@ -7,56 +7,54 @@
  * Others:
 *********************************************************************************/
 
-#ifndef PATH_ALGORITHM_GREEDYBESTFIRST_HPP
-#define PATH_ALGORITHM_GREEDYBESTFIRST_HPP
+#ifndef PATH_ALGORITHM_DIJKSTRA_HPP
+#define PATH_ALGORITHM_DIJKSTRA_HPP
 
 #include "AbstractSolver.hpp"
-#include <utility>
 #include <valarray>
 
-enum Direction
-{
-    d_s,
-    d_n,
-    d_w,
-    d_e,
-    d_se,
-    d_sw,
-    d_ne,
-    d_nw,
-};
 
-class Scene;
-
-class GreedyBestFirst : public AbstractSolver
+class Dijkstra : public AbstractSolver
 {
 public:
     struct Vertex
     {
         int row;
         int col;
+        double distance = 0;
 
         Vertex operator+(const Vertex &v) const
         {
-            return {row + v.row, col + v.col};
+            return {row + v.row, col + v.col, distance + v.distance};
         }
 
-        bool operator==(const Vertex &v) const {
+        bool operator==(const Vertex &v) const
+        {
             return row == v.row && col == v.col;
+        }
+
+        bool operator<(const Vertex &v) const
+        {
+            return distance < v.distance;
+        }
+
+        bool operator>(const Vertex &v) const
+        {
+            return distance > v.distance;
         }
     };
 public:
-    GreedyBestFirst();
-    ~GreedyBestFirst() override = default;
+    Dijkstra();
+    ~Dijkstra() override = default;
+    void tick() override;
+    void run(int interval) override;
+    void setCallback(Callback callback) override;
+    void setScene(Scene *scene) override;
     void setStart(int row, int col) override;
     void setDest(int row, int col) override;
     void reset() override;
-    void tick() override;
-    void run(int interval) override;
-    void setScene(Scene *scene) override;
-    void setCallback(Callback callback) override;
 protected:
-    void gbfs();
+    void dijkstra();
 private:
     Scene *mScene = nullptr;
     Vertex mStartPos;
@@ -69,4 +67,4 @@ private:
 };
 
 
-#endif //PATH_ALGORITHM_GREEDYBESTFIRST_HPP
+#endif //PATH_ALGORITHM_DIJKSTRA_HPP

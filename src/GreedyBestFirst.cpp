@@ -23,17 +23,6 @@ GreedyBestFirst::GreedyBestFirst()
     mDirection.push_back({0, -1});
 }
 
-int sign(int i)
-{
-    if (i < 0) {
-        return -1;
-    } else if (i > 0) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
 void GreedyBestFirst::setScene(Scene *scene)
 {
     mScene = scene;
@@ -103,16 +92,27 @@ void GreedyBestFirst::gbfs()
 //    std::priority_queue<int, std::vector<int>, decltype(cmp)> q3(cmp);
     std::priority_queue<Vertex, std::vector<Vertex>, decltype(cmp)> q(cmp);
     q.push({mStartPos});
-
+    Vertex v{};
+    auto &path = mScene->path();
     while (!q.empty() && !mFinish) {
-        Vertex v = q.top();
+        v = q.top();
+//        for (auto it = path.rbegin(); it != path.rend();) {
+//            if (!cmp(Vertex{it->first, it->second}, v)) {
+//                ++it;
+//                path.pop_back();
+//            } else {
+//                break;
+//            }
+//        }
         q.pop();
+//        path.emplace_back(v.row, v.col);
         if (mScene->canPass(v.row, v.col)) {
             std::this_thread::sleep_for(std::chrono::milliseconds(mDuration));
             mScene->setData(v.row, v.col, bt_traveled);
             mCallback();
+        } else {
+            continue;
         }
-        bool stuck = true;
         for (const auto &d: mDirection) {
             auto next = v + d;
             if (mScene->canPass(next.row, next.col)) {
@@ -122,9 +122,9 @@ void GreedyBestFirst::gbfs()
                 } else {
                     q.push(next);
                 }
-                stuck = false;
             }
         }
+
     }
 }
 

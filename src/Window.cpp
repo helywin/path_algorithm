@@ -18,6 +18,7 @@
 #include "Scene.hpp"
 #include "Render.hpp"
 #include "GreedyBestFirst.hpp"
+#include "Dijkstra.hpp"
 #include "WidgetCom.hpp"
 
 class WindowPrivate
@@ -43,7 +44,8 @@ WindowPrivate::WindowPrivate(Window *p) :
         mScene(50, 30)
 {
     Q_Q(Window);
-    mSolver = new GreedyBestFirst();
+    mSolver = new Dijkstra();
+//    mSolver = new GreedyBestFirst();
     mRender.setScene(&mScene);
 //    initWidget(mLayout, q);
 //    initWidget(mView, q);
@@ -90,7 +92,6 @@ void WindowPrivate::init()
     mSolver->setCallback([this] {
         q_ptr->update();
         QApplication::processEvents(QEventLoop::AllEvents, 100);
-        qDebug() << "tick";
     });
     mTimer.setInterval(1000);
     mTimer.start();
