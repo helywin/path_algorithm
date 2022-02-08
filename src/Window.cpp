@@ -63,29 +63,29 @@ void WindowPrivate::init()
 {
     // 设置边界
     for (int j = 0; j < mScene.size().width(); ++j) {
-        mScene.setData(0, j, BlockType::bt_boundary, 0);
+        mScene.block(0, j).blockType = BlockType::bt_boundary;
     }
     for (int j = 0; j < mScene.size().width(); ++j) {
-        mScene.setData(mScene.size().height() - 1, j, BlockType::bt_boundary, 0);
+        mScene.block(mScene.size().height() - 1, j).blockType = BlockType::bt_boundary;
     }
     for (int i = 0; i < mScene.size().height(); ++i) {
-        mScene.setData(i, 0, BlockType::bt_boundary, 0);
+        mScene.block(i, 0).blockType = BlockType::bt_boundary;
     }
     for (int i = 0; i < mScene.size().height(); ++i) {
-        mScene.setData(i, mScene.size().width() - 1, BlockType::bt_boundary, 0);
+        mScene.block(i, mScene.size().width() - 1).blockType = BlockType::bt_boundary;
     }
     // 设置障碍
     for (int j = 10; j < 20; ++j) {
-        mScene.setData(15, j, BlockType::bt_obstacle, 0);
+        mScene.block(15, j).blockType = BlockType::bt_obstacle;
     }
     for (int i = 1; i < 16; ++i) {
-        mScene.setData(i, 19, BlockType::bt_obstacle, 0);
+        mScene.block(i, 19).blockType = BlockType::bt_obstacle;
     }
     for (int i = 15; i < 29; ++i) {
-        mScene.setData(i, 30, BlockType::bt_obstacle, 0);
+        mScene.block(i, 30).blockType = BlockType::bt_obstacle;
     }
     for (int i = 1; i < 16; ++i) {
-        mScene.setData(i, 40, BlockType::bt_obstacle, 0);
+        mScene.block(i, 40).blockType = BlockType::bt_obstacle;
     }
     // 设置起始终止点
     mSolver->setScene(&mScene);

@@ -42,8 +42,8 @@ void Render::paint(QPaintDevice *device)
             QRect r(j * blockWidth(), (size.height() - 1) * blockWidth() - i * blockWidth(),
                     blockWidth(), blockWidth());
             painter.setPen(QPen(Qt::black, 1));
-            auto data = mScene->getData(i, j);
-            painter.setBrush(colorTable(data.first));
+            auto data = mScene->block(i, j);
+            painter.setBrush(colorTable(data.blockType));
             painter.drawRect(r);
         }
     }

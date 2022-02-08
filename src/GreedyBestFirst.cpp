@@ -17,40 +17,12 @@
 
 GreedyBestFirst::GreedyBestFirst()
 {
-    mDirection.push_back({1, 0});
-    mDirection.push_back({0, 1});
-    mDirection.push_back({-1, 0});
-    mDirection.push_back({0, -1});
-}
-
-void GreedyBestFirst::setScene(Scene *scene)
-{
-    mScene = scene;
 }
 
 void GreedyBestFirst::run(int interval)
 {
     mDuration = interval;
     gbfs();
-}
-
-void GreedyBestFirst::setStart(int row, int col)
-{
-    mScene->setData(row, col, bt_startPos);
-    mStartPos.row = row;
-    mStartPos.col = col;
-}
-
-void GreedyBestFirst::setDest(int row, int col)
-{
-    mScene->setData(row, col, bt_destPos);
-    mDestPos.row = row;
-    mDestPos.col = col;
-}
-
-void GreedyBestFirst::setCallback(Callback callback)
-{
-    mCallback = callback;
 }
 
 /*
@@ -75,7 +47,7 @@ void GreedyBestFirst::gbfs()
     // 从小到大排列
     auto cmp = [this](const Vertex &a, const Vertex &b) {
         auto distance = [this](const Vertex &v) {
-            return sqrt(pow(v.row - mDestPos.row, 2) + pow(v.col - mDestPos.col, 2));
+            return sqrt(pow(v.row() - mDestPos.row(), 2) + pow(v.col() - mDestPos.col(), 2));
         };
         return distance(a) > distance(b);
     };
@@ -96,16 +68,16 @@ void GreedyBestFirst::gbfs()
 //        }
         q.pop();
 //        path.emplace_back(v.row, v.col);
-        if (mScene->canPass(v.row, v.col)) {
+        if (v.canPass()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(mDuration));
-            mScene->setData(v.row, v.col, bt_traveled);
+            v.block().blockType = bt_traveled;
             mCallback();
         } else {
             continue;
         }
-        for (const auto &d: mDirection) {
-            auto next = v + d;
-            if (mScene->canPass(next.row, next.col)) {
+        for (auto i : mDirectionTable) {
+            auto next = v + i;
+            if (next.canPass()) {
                 if (next == mDestPos) {
                     mFinish = true;
                     break;

@@ -14,37 +14,10 @@
 #include <chrono>
 #include "Scene.hpp"
 
-Dijkstra::Dijkstra()
-{
-    const double sqrt2 = sqrt(2);
-    mDirection.push_back({1, 1, sqrt2});
-    mDirection.push_back({-1, 1, sqrt2});
-    mDirection.push_back({1, -1, sqrt2});
-    mDirection.push_back({-1, -1, sqrt2});
-    mDirection.push_back({1, 0, 1});
-    mDirection.push_back({0, 1, 1});
-    mDirection.push_back({-1, 0, 1});
-    mDirection.push_back({0, -1, 1});
-}
-
 void Dijkstra::run(int interval)
 {
     mDuration = interval;
     dijkstra();
-}
-
-void Dijkstra::setStart(int row, int col)
-{
-    mScene->setData(row, col, bt_startPos);
-    mStartPos.row = row;
-    mStartPos.col = col;
-}
-
-void Dijkstra::setDest(int row, int col)
-{
-    mScene->setData(row, col, bt_destPos);
-    mDestPos.row = row;
-    mDestPos.col = col;
 }
 
 //  function Dijkstra(Graph, source):
@@ -76,7 +49,7 @@ void Dijkstra::dijkstra()
 {
 // 从小到大排列
     auto cmp = [this](const Vertex &a, const Vertex &b) {
-        return a.distance > b.distance;
+        return a.block().distance > b.block().distance;
     };
 //    std::priority_queue<int, std::vector<int>, decltype(cmp)> q3(cmp);
     std::priority_queue<Vertex, std::vector<Vertex>, decltype(cmp)> q(cmp);
@@ -85,17 +58,17 @@ void Dijkstra::dijkstra()
     while (!q.empty() && !mFinish) {
         Vertex v = q.top();
         q.pop();
-        if (mScene->canPass(v.row, v.col)) {
+        if (v.canPass()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(mDuration));
-            mScene->setData(v.row, v.col, bt_traveled);
+            v.block().blockType = bt_traveled;
             mCallback();
         } else {
             continue;
         }
         bool stuck = true;
-        for (const auto &d: mDirection) {
-            auto next = v + d;
-            if (mScene->canPass(next.row, next.col)) {
+        for (auto i : mDirectionTable) {
+            auto next = v + i;
+            if (next.canPass()) {
                 if (next == mDestPos) {
                     mFinish = true;
                     break;
@@ -106,14 +79,4 @@ void Dijkstra::dijkstra()
             }
         }
     }
-}
-
-void Dijkstra::setCallback(Callback callback)
-{
-    mCallback = callback;
-}
-
-void Dijkstra::setScene(Scene *scene)
-{
-    mScene = scene;
 }

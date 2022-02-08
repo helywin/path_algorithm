@@ -15,22 +15,9 @@
 #include <chrono>
 #include "Scene.hpp"
 
-AStar::AStar()
+AStar::AStar() : AbstractSolver()
 {
     const double sqrt2 = sqrt(2);
-    mDirection.push_back({1, 1, sqrt2});
-    mDirection.push_back({-1, 1, sqrt2});
-    mDirection.push_back({1, -1, sqrt2});
-    mDirection.push_back({-1, -1, sqrt2});
-    mDirection.push_back({1, 0, 1});
-    mDirection.push_back({0, 1, 1});
-    mDirection.push_back({-1, 0, 1});
-    mDirection.push_back({0, -1, 1});
-}
-
-void AStar::setScene(Scene *scene)
-{
-    mScene = scene;
 }
 
 void AStar::run(int interval)
@@ -39,34 +26,14 @@ void AStar::run(int interval)
     astar();
 }
 
-void AStar::setStart(int row, int col)
-{
-    mScene->setData(row, col, bt_startPos);
-    mStartPos.row = row;
-    mStartPos.col = col;
-}
-
-void AStar::setDest(int row, int col)
-{
-    mScene->setData(row, col, bt_destPos);
-    mDestPos.row = row;
-    mDestPos.col = col;
-}
-
-void AStar::setCallback(Callback callback)
-{
-    mCallback = callback;
-}
-
-
 void AStar::astar()
 {
 // 从小到大排列
     auto cmp = [this](const Vertex &a, const Vertex &b) {
         auto distance = [this](const Vertex &v) {
-            return sqrt(pow(v.row - mDestPos.row, 2) + pow(v.col - mDestPos.col, 2));
+            return mDestPos.distance(v);
         };
-        return distance(a) + a.distance > distance(b) + b.distance;
+        return distance(a) + a.block().distance > distance(b) + b.block().distance;
     };
 //    std::priority_queue<int, std::vector<int>, decltype(cmp)> q3(cmp);
     std::priority_queue<Vertex, std::vector<Vertex>, decltype(cmp)> q(cmp);
@@ -85,16 +52,16 @@ void AStar::astar()
 //        }
         q.pop();
 //        path.emplace_back(v.row, v.col);
-        if (mScene->canPass(v.row, v.col)) {
+        if (v.canPass()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(mDuration));
-            mScene->setData(v.row, v.col, bt_traveled);
+            v.block().blockType = bt_traveled;
             mCallback();
         } else {
             continue;
         }
-        for (const auto &d: mDirection) {
-            auto next = v + d;
-            if (mScene->canPass(next.row, next.col)) {
+        for (auto i : mDirectionTable) {
+            auto next = v + i;
+            if (next.canPass()) {
                 if (next == mDestPos) {
                     mFinish = true;
                     break;

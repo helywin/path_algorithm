@@ -8,3 +8,40 @@
 *********************************************************************************/
 
 #include "AbstractSolver.hpp"
+
+AbstractSolver::AbstractSolver()
+{
+    mDirectionTable = {
+            d_ne,
+            d_e,
+            d_n,
+            d_se,
+            d_nw,
+            d_s,
+            d_w,
+            d_sw,
+    };
+}
+
+void AbstractSolver::setStart(int row, int col)
+{
+    mScene->block(row, col).blockType = bt_startPos;
+    mStartPos = mScene->vertex(row, col);
+    mStartPos.block().distance = 0;
+}
+
+void AbstractSolver::setDest(int row, int col)
+{
+    mScene->block(row, col).blockType = bt_destPos;
+    mDestPos = mScene->vertex(row, col);
+}
+
+void AbstractSolver::setCallback(Callback callback)
+{
+    mCallback = callback;
+}
+
+void AbstractSolver::setScene(Scene *scene)
+{
+    mScene = scene;
+}
