@@ -18,16 +18,21 @@ enum BlockType : uint8_t
     bt_empty,
     bt_boundary,
     bt_obstacle,
-    bt_startPos,
-    bt_destPos,
     bt_traveled,
+};
+
+enum BlockSymbol {
+    bs_none,
+    bs_startPos,
+    bs_destPos,
 };
 
 struct Block
 {
+    BlockSymbol blockSymbol = bs_none;
     BlockType blockType = bt_empty;
     double distance = DBL_MAX;
-    Block *last = nullptr;
+    std::pair<int, int> last{-1, -1};
 
     bool operator<(const Block &v) const
     {
@@ -67,7 +72,7 @@ static const std::vector<double> DISTANCE_TABLE{
         DIAGONAL_LENGTH,
 };
 
-static const  std::vector<std::pair<int8_t, int8_t>> DIRECTION_TABLE{
+static const std::vector<std::pair<int8_t, int8_t>> DIRECTION_TABLE{
         {-1, 0},
         {1,  0},
         {0,  -1},

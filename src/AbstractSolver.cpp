@@ -13,26 +13,26 @@ AbstractSolver::AbstractSolver()
 {
     mDirectionTable = {
             d_ne,
-            d_e,
-            d_n,
             d_se,
             d_nw,
+            d_sw,
+            d_e,
+            d_n,
             d_s,
             d_w,
-            d_sw,
     };
 }
 
 void AbstractSolver::setStart(int row, int col)
 {
-    mScene->block(row, col).blockType = bt_startPos;
+    mScene->block(row, col).blockSymbol = bs_startPos;
     mStartPos = mScene->vertex(row, col);
     mStartPos.block().distance = 0;
 }
 
 void AbstractSolver::setDest(int row, int col)
 {
-    mScene->block(row, col).blockType = bt_destPos;
+    mScene->block(row, col).blockSymbol = bs_destPos;
     mDestPos = mScene->vertex(row, col);
 }
 

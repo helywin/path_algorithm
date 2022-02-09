@@ -9,6 +9,7 @@
 
 #include "Scene.hpp"
 #include <cassert>
+#include <iostream>
 
 int Vertex::mWidth = 0;
 int Vertex::mHeight = 0;
@@ -38,5 +39,18 @@ Block &Scene::block(int row, int col)
     assert(row < mHeight && row >= 0);
     assert(col < mWidth && col >= 0);
     return mData[row * mWidth + col];
+}
+
+void Scene::generatePath(const Vertex &dest)
+{
+    int row = dest.row();
+    int col = dest.col();
+    while (row < mHeight && row >= 0 &&
+           col < mWidth && col >= 0) {
+        mPath.push_back({row, col});
+        row = block(row, col).last.first;
+        col = block(row, col).last.second;
+    }
+    std::cout << "size: " << mPath.size() << std::endl;
 }
 

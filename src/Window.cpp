@@ -45,8 +45,8 @@ WindowPrivate::WindowPrivate(Window *p) :
         mScene(50, 30)
 {
     Q_Q(Window);
-    mSolver = new AStar();
-//    mSolver = new Dijkstra();
+//    mSolver = new AStar();
+    mSolver = new Dijkstra();
 //    mSolver = new GreedyBestFirst();
     mRender.setScene(&mScene);
 //    initWidget(mLayout, q);

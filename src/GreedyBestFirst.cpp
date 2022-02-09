@@ -14,6 +14,7 @@
 #include <chrono>
 #include <queue>
 #include <algorithm>
+#include <QDebug>
 
 GreedyBestFirst::GreedyBestFirst()
 {
@@ -68,16 +69,16 @@ void GreedyBestFirst::gbfs()
 //        }
         q.pop();
 //        path.emplace_back(v.row, v.col);
-        if (v.canPass()) {
+        if (v.canTravel()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(mDuration));
-            v.block().blockType = bt_traveled;
+            v.setTravelled();
             mCallback();
         } else {
             continue;
         }
         for (auto i : mDirectionTable) {
-            auto next = v + i;
-            if (next.canPass()) {
+            auto next = v.move(i);
+            if (next.canTravel()) {
                 if (next == mDestPos) {
                     mFinish = true;
                     break;
@@ -86,7 +87,8 @@ void GreedyBestFirst::gbfs()
                 }
             }
         }
-
     }
+    mScene->generatePath(mDestPos);
+    mCallback();
 }
 

@@ -20,9 +20,6 @@ QColor colorTable(BlockType type)
         case bt_boundary:
         case bt_obstacle:
             return Qt::black;
-        case bt_startPos:
-        case bt_destPos:
-            return Qt::blue;
         case bt_traveled:
             return Qt::gray;
     }
@@ -43,7 +40,11 @@ void Render::paint(QPaintDevice *device)
                     blockWidth(), blockWidth());
             painter.setPen(QPen(Qt::black, 1));
             auto data = mScene->block(i, j);
-            painter.setBrush(colorTable(data.blockType));
+            if (data.blockSymbol != bs_none) {
+                painter.setBrush(Qt::blue);
+            } else {
+                painter.setBrush(colorTable(data.blockType));
+            }
             painter.drawRect(r);
         }
     }

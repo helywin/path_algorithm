@@ -13,6 +13,7 @@
 #include <cmath>
 #include <thread>
 #include <chrono>
+#include <QDebug>
 #include "Scene.hpp"
 
 AStar::AStar() : AbstractSolver()
@@ -23,6 +24,7 @@ AStar::AStar() : AbstractSolver()
 void AStar::run(int interval)
 {
     mDuration = interval;
+    mDuration = 5;
     astar();
 }
 
@@ -42,26 +44,17 @@ void AStar::astar()
     auto &path = mScene->path();
     while (!q.empty() && !mFinish) {
         v = q.top();
-//        for (auto it = path.rbegin(); it != path.rend();) {
-//            if (!cmp(Vertex{it->first, it->second}, v)) {
-//                ++it;
-//                path.pop_back();
-//            } else {
-//                break;
-//            }
-//        }
         q.pop();
-//        path.emplace_back(v.row, v.col);
-        if (v.canPass()) {
+        if (v.canTravel()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(mDuration));
-            v.block().blockType = bt_traveled;
+            v.setTravelled();
             mCallback();
         } else {
             continue;
         }
         for (auto i : mDirectionTable) {
-            auto next = v + i;
-            if (next.canPass()) {
+            auto next = v.move(i);
+            if (next.canTravel()) {
                 if (next == mDestPos) {
                     mFinish = true;
                     break;
@@ -71,5 +64,8 @@ void AStar::astar()
             }
         }
     }
+    qInfo() << "完成";
+    mScene->generatePath(mDestPos);
+    mCallback();
 }
 

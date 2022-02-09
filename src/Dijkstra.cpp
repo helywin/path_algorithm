@@ -58,17 +58,17 @@ void Dijkstra::dijkstra()
     while (!q.empty() && !mFinish) {
         Vertex v = q.top();
         q.pop();
-        if (v.canPass()) {
+        if (v.canTravel()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(mDuration));
-            v.block().blockType = bt_traveled;
+            v.setTravelled();
             mCallback();
         } else {
             continue;
         }
         bool stuck = true;
-        for (auto i : mDirectionTable) {
-            auto next = v + i;
-            if (next.canPass()) {
+        for (auto i: mDirectionTable) {
+            auto next = v.move(i);
+            if (next.canTravel()) {
                 if (next == mDestPos) {
                     mFinish = true;
                     break;
@@ -79,4 +79,11 @@ void Dijkstra::dijkstra()
             }
         }
     }
+    mScene->generatePath(mDestPos);
+    mCallback();
+}
+
+Dijkstra::Dijkstra()
+{
+
 }
